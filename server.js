@@ -26,6 +26,11 @@ const TESTS_DIR = path.join(__dirname, 'tests');
 
 // Initialize data directory and files
 function initDataFiles() {
+    // Skip file initialization on Vercel
+    if (process.env.VERCEL) {
+        return;
+    }
+
     const dataDir = path.join(__dirname, 'data');
     if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir);
@@ -42,12 +47,33 @@ function initDataFiles() {
     }
 }
 
+// In-memory storage for Vercel (reset on each deploy)
+let memoryStorage = {
+    users: [],
+    sessions: [],
+    results: []
+};
+
 // Helper functions
 function readJSON(file) {
+    // Use in-memory storage on Vercel
+    if (process.env.VERCEL) {
+        if (file === USERS_FILE) return memoryStorage.users;
+        if (file === SESSIONS_FILE) return memoryStorage.sessions;
+        if (file === RESULTS_FILE) return memoryStorage.results;
+        return [];
+    }
     return JSON.parse(fs.readFileSync(file, 'utf-8'));
 }
 
 function writeJSON(file, data) {
+    // Use in-memory storage on Vercel
+    if (process.env.VERCEL) {
+        if (file === USERS_FILE) memoryStorage.users = data;
+        if (file === SESSIONS_FILE) memoryStorage.sessions = data;
+        if (file === RESULTS_FILE) memoryStorage.results = data;
+        return;
+    }
     fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
@@ -350,8 +376,14 @@ app.get('/api/health', (req, res) => {
 // Initialize and start server
 initDataFiles();
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Admin dashboard: http://localhost:${PORT}/admin.html`);
-    console.log(`Admin password: ${ADMIN_PASSWORD}`);
-});
+// For Vercel serverless deployment
+if (process.env.VERCEL) {
+    module.exports = app;
+} else {
+    // For local development
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+        console.log(`Admin dashboard: http://localhost:${PORT}/admin.html`);
+        console.log(`Admin password: ${ADMIN_PASSWORD}`);
+    });
+}

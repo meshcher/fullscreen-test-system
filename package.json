@@ -1,14 +1,11 @@
 {
   "name": "fullscreen-test-system",
   "version": "1.0.0",
-
-  "engines": {
-    "node": "20.x"
-  },
-
-
   "description": "Fullscreen test system with violation tracking",
   "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
