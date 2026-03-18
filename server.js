@@ -377,13 +377,4 @@ app.get('/api/health', (req, res) => {
 initDataFiles();
 
 // For Vercel serverless deployment
-if (process.env.VERCEL) {
-    module.exports = app;
-} else {
-    // For local development
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-        console.log(`Admin dashboard: http://localhost:${PORT}/admin.html`);
-        console.log(`Admin password: ${ADMIN_PASSWORD}`);
-    });
-}
+module.exports = app;

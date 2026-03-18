@@ -1,6 +1,4 @@
 {
-  "installCommand": "npm install",
-  "buildCommand": "echo 'No build needed'",
   "rewrites": [
     {
       "source": "/(.*)",
