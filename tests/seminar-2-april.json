@@ -1,0 +1,27 @@
+{
+  "testId": "seminar-2-april",
+  "title": "Seminar 2 - April",
+  "duration": 15,
+  "randomizeQuestions": true,
+  "randomizeOptions": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the largest ocean on Earth?",
+      "options": ["Atlantic", "Pacific", "Indian", "Arctic"],
+      "correct": 1
+    },
+    {
+      "id": 2,
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Michelangelo", "Leonardo da Vinci", "Raphael", "Donatello"],
+      "correct": 1
+    },
+    {
+      "id": 3,
+      "question": "What year did World War II end?",
+      "options": ["1943", "1944", "1945", "1946"],
+      "correct": 2
+    }
+  ]
+}
