@@ -373,6 +373,11 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
+// Root redirect
+app.get('/', (req, res) => {
+    res.redirect('/index.html');
+});
+
 // Initialize and start server
 initDataFiles();
 
