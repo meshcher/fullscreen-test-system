@@ -1,1 +1,7 @@
-{}
+{
+  "functions": {
+    "index.js": {
+      "includeFiles": "{tests/**,questions.json,public/**}"
+    }
+  }
+}

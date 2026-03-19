@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const TEST_CONFIGS = require('./test-configs');
 
 // Load environment variables
 require('dotenv').config();
@@ -77,44 +78,17 @@ function writeJSON(file, data) {
     fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
-// Load test configuration from file
+// Load test configuration
 function loadTestConfig() {
-    try {
-        // First try loading from tests directory with ACTIVE_TEST
-        const testFile = path.join(TESTS_DIR, `${ACTIVE_TEST}.json`);
-
-        if (fs.existsSync(testFile)) {
-            console.log(`Loading test from: tests/${ACTIVE_TEST}.json`);
-            const config = readJSON(testFile);
-
-            // Ensure testId is set
-            if (!config.testId) {
-                config.testId = ACTIVE_TEST;
-            }
-
-            return config;
-        }
-
-        // Fallback to legacy questions.json
-        if (fs.existsSync(QUESTIONS_FILE)) {
-            console.log('Loading test from: questions.json (legacy)');
-            const config = readJSON(QUESTIONS_FILE);
-
-            // Add testId if not present
-            if (!config.testId) {
-                config.testId = 'default';
-            }
-
-            return config;
-        }
-
-        console.error('No test configuration found!');
-        console.error(`Looking for: tests/${ACTIVE_TEST}.json or questions.json`);
-        return null;
-    } catch (err) {
-        console.error('Error loading test configuration:', err.message);
-        return null;
+    // Load from inlined JS configs
+    const config = TEST_CONFIGS[ACTIVE_TEST];
+    if (config) {
+        console.log(`Loading test: ${ACTIVE_TEST}`);
+        return config;
     }
+
+    console.error(`No test configuration found for: ${ACTIVE_TEST}`);
+    return null;
 }
 
 // Admin credentials (in production, use proper authentication)
